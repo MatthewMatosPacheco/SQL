@@ -1,0 +1,63 @@
+-- CreatING A ECOMMERCE DATA BASE
+CREATE DATABASE ECommerceDB;
+USE ECommerceDB;
+
+
+-- table for products
+CREATE TABLE Products (
+    ProductID INT PRIMARY KEY AUTO_INCREMENT,
+    Name VARCHAR(255) NOT NULL,
+    Description TEXT,
+    Price DECIMAL(10, 2) NOT NULL,
+    StockQuantity INT NOT NULL
+);
+
+--table for customers
+CREATE TABLE Customers (
+    CustomerID INT PRIMARY KEY AUTO_INCREMENT,
+    FirstName VARCHAR(50) NOT NULL,
+    LastName VARCHAR(50) NOT NULL,
+    Email VARCHAR(100) UNIQUE NOT NULL
+);
+
+-- table for orders
+CREATE TABLE Orders (
+    OrderID INT PRIMARY KEY AUTO_INCREMENT,
+    CustomerID INT,
+    OrderDate DATE NOT NULL,
+    FOREIGN KEY (CustomerID) REFERENCES Customers(CustomerID)
+);
+
+-- table for order items
+CREATE TABLE OrderItems (
+    OrderItemID INT PRIMARY KEY AUTO_INCREMENT,
+    OrderID INT,
+    ProductID INT,
+    Quantity INT NOT NULL,
+    Price DECIMAL(10, 2) NOT NULL,
+    FOREIGN KEY (OrderID) REFERENCES Orders(OrderID),
+    FOREIGN KEY (ProductID) REFERENCES Products(ProductID)
+);
+
+-- table for product reviews
+CREATE TABLE ProductReviews (
+    ReviewID INT PRIMARY KEY AUTO_INCREMENT,
+    ProductID INT,
+    CustomerID INT,
+    Rating INT NOT NULL,
+    Comment TEXT,
+    ReviewDate DATE NOT NULL,
+    FOREIGN KEY (ProductID) REFERENCES Products(ProductID),
+    FOREIGN KEY (CustomerID) REFERENCES Customers(CustomerID)
+);
+-- WITH INSERT INTO IMPORT YOUR DATA
+--calculate total revenue from a sale
+SELECT SUM(oi.Quantity * oi.Price) AS TotalRevenue
+FROM OrderItems oi
+WHERE oi.OrderID = 1;
+
+--retrieve data from a customer
+
+SELECT * FROM Orders
+WHERE CustomerID = 1;
+
